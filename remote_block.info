@@ -1,0 +1,6 @@
+; $Id$
+name = "Remote Block"
+description = "Renders blocks on a regionless page so that they may be embedded via an iframe."
+package = Custom Modules
+core = 6.x
+version = 6.x-1.0

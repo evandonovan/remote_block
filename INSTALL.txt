@@ -1,0 +1,3 @@
+Follow the standard Drupal module installation process to install this module.
+
+Note that this is a development release, and the code would need to be modified to suit specific use cases on your site.

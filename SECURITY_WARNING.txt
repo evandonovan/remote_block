@@ -1,0 +1,3 @@
+This module does not currently do any security checking on the blocks that can be embedded, beyond the "access content" permission. Currently I am not aware of a way to properly check to ensure that arbitrary blocks can be viewed by anonymous users, as would be the case on third-party sites.
+
+You should be very careful in enabling this module or else private data might be exposed.

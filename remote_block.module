@@ -1,0 +1,72 @@
+<?php
+// $Id$
+
+/** 
+* Implements hook_help()
+*/
+function remote_block_help($path, $arg) {
+  $output = '';
+  switch($path) {
+    case 'admin/help#remote_block':
+    $output = '<p>' . t('Remote Block renders blocks on a regionless page so that they may be embedded via an iframe. You may use the following syntax (--add syntax here--) to embed any given block on a site. Note that required CSS and JS will be included, so blocks with special styles and behaviors (such as Quicktabs blocks) will still function.') . '</p>';
+    $output .= '<p>' . t('The pages provided by Remote Block can also display bare HTML if the ?theme=none query string is appended to the URL. This is useful when using wget to grab raw HTML for use in external sites.') . '</p>';
+    break;
+    }
+  return $output;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function remote_block_menu() {
+  $items = array();
+
+  $items['remote-block/%/%'] = array(
+    'page callback' => 'remote_block_embed',
+    'page arguments' => array(1, 2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Menu callback for remote-block/%/% -
+ * invokes the block view hook in order to render a certain block.
+ */
+function remote_block_embed($module, $delta) {
+  $theme = TRUE;
+  if(isset($_GET) && isset($_GET['theme']) && $_GET['theme'] == 'none') { $theme = FALSE; }
+	
+  $content = '<html><head>';
+  $block = module_invoke($module, 'block', 'view', $delta);
+  $content .= drupal_get_html_head();
+  $content .= drupal_get_css();
+  if($module == 'quicktabs') { 
+    $content .= 
+      '<style type="text/css">
+         .quicktabs-hide {
+          display: block;
+          position: absolute;
+          left: -10000px;
+          top: -10000px;
+         }
+       </style>';
+  }
+  $content .= '</head><body>';
+  $content .= '<div id="iframe">' . $block['content'] . '</div>';
+  $content .= drupal_get_js();
+  $content .= '</body></html>';
+  if(isset($block) && is_array($block) && isset($block['content'])) { 
+    if($theme == FALSE) {
+      print $block['content'];
+    }
+    else {
+      print $content;
+    }
+  }
+  else {
+    print "Block does not exist.";
+  }
+}
