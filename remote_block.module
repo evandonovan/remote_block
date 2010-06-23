@@ -28,7 +28,7 @@ function remote_block_menu() {
     'type' => MENU_CALLBACK,
   );
 	
-	$items['remote-block/%/%/%'] = array(
+  $items['remote-block/%/%/%'] = array(
     'page callback' => 'remote_block_embed',
     'page arguments' => array(1, 2, 3),
     'access arguments' => array('access content'),
@@ -62,24 +62,24 @@ function remote_block_embed($module, $delta, $format = "html") {
   }
   $content .= $block['content'];
   $content .= drupal_get_js();
-	$json_block = array('page' => $block['content']);
-	$json_content = array('page' => $content);
-	if(isset($block) && is_array($block) && isset($block['content'])) { 
+  $json_block = array('page' => $block['content']);
+  $json_content = array('page' => $content);
+  if(isset($block) && is_array($block) && isset($block['content'])) { 
     if($theme == FALSE) {
-		  if($format == "html") {
+      if($format == "html") {
         print $block['content'];
-			}
-			else {
-			  echo $_GET['callback'] . '(' . json_encode($json_block) . ');';
-			}
+      }
+      else {
+        echo $_GET['callback'] . '(' . json_encode($json_block) . ');';
+      }
     }
     else {
-		  if($format == "html") {
-			  print $content;
-			}
-			else {
-			  echo $_GET['callback'] . '(' . json_encode($json_content) . ');';
-			}
+      if($format == "html") {
+        print $content;
+      }
+      else {
+        echo $_GET['callback'] . '(' . json_encode($json_content) . ');';
+      }
     }
   }
   else {
