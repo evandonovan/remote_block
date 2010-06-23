@@ -27,6 +27,13 @@ function remote_block_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+	
+	$items['remote-block/%/%/%'] = array(
+    'page callback' => 'remote_block_embed',
+    'page arguments' => array(1, 2, 3),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
 
   return $items;
 }
@@ -35,13 +42,12 @@ function remote_block_menu() {
  * Menu callback for remote-block/%/% -
  * invokes the block view hook in order to render a certain block.
  */
-function remote_block_embed($module, $delta) {
+function remote_block_embed($module, $delta, $format = "html") {
   $theme = TRUE;
   if(isset($_GET) && isset($_GET['theme']) && $_GET['theme'] == 'none') { $theme = FALSE; }
 	
-  $content = '<html><head>';
   $block = module_invoke($module, 'block', 'view', $delta);
-  $content .= drupal_get_html_head();
+  // $content .= drupal_get_html_head();
   $content .= drupal_get_css();
   if($module == 'quicktabs') { 
     $content .= 
@@ -54,16 +60,26 @@ function remote_block_embed($module, $delta) {
          }
        </style>';
   }
-  $content .= '</head><body>';
-  $content .= '<div id="iframe">' . $block['content'] . '</div>';
+  $content .= $block['content'];
   $content .= drupal_get_js();
-  $content .= '</body></html>';
-  if(isset($block) && is_array($block) && isset($block['content'])) { 
+	$json_block = array('page' => $block['content']);
+	$json_content = array('page' => $content);
+	if(isset($block) && is_array($block) && isset($block['content'])) { 
     if($theme == FALSE) {
-      print $block['content'];
+		  if($format == "html") {
+        print $block['content'];
+			}
+			else {
+			  echo $_GET['callback'] . '(' . json_encode($json_block) . ');';
+			}
     }
     else {
-      print $content;
+		  if($format == "html") {
+			  print $content;
+			}
+			else {
+			  echo $_GET['callback'] . '(' . json_encode($json_content) . ');';
+			}
     }
   }
   else {
