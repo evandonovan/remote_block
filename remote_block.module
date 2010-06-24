@@ -63,6 +63,9 @@ function remote_block_embed($format, $module, $delta) {
          }
        </style>';
   }
+	// If $format is "html" then add the JS for <iframe> window.postMessage.
+	drupal_add_js(drupal_get_path('module', 'remote_block') . '/js/jquery.ba-postmessage.min.js');
+	drupal_add_js(drupal_get_path('module', 'remote_block') . '/js/remote_block_child.js');
   // Adds JS at the bottom.
   $js = drupal_get_js();
 
