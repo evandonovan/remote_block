@@ -16,6 +16,6 @@ $(function(){
   setHeight();
 	
 	// Bind to Quicktabs list items so that iframe resizes when they are clicked
-	$('.quicktabs_tabs li').click(function() { setHeight(); });
+	$('a.qt_tab').click(function() { setHeight(); });
   
 });
