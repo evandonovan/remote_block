@@ -1,8 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://w3.org/1999/xhtml">
+
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
 <title>My City - Boston | Boston Volunteer Opportunities, Jobs, Organizations, Ministry Workers</title>
 
 <style type="text/css" media="screen">
@@ -30,7 +33,7 @@
 	}
 	h1 {
 	    margin:0;
-        }
+    }
 	#nav {
 		padding:5px 10px;
 		background:#CFCFCF;
@@ -68,57 +71,63 @@
 	}
 	#footer p {
 		margin:0;
-       }
+    }
 	* html #footer {
 		height:1px;
 	}
-</style>
+	</style>
+
+<meta name="x-embed-css" content="used by embed code" />
 
 </head>
 
 <body>
 <div id="wrap">
-<div id="header">
-<h1>My City - Boston</h1></div>
+<div id="header"><h1>My City - Boston</h1></div>
 <div id="nav">
-  <ul>
-    <li><a href="#">Organizations</a></li>
-    <li><a href="#">Volunteers</a></li>
-    <li><a href="#">Churches</a></li>
-    <li><a href="#">Help</a></li>
-    <li><a href="#">Contact Us</a></li>
-  </ul>
-</div>
+		<ul>
+			<li><a href="#">Organizations</a></li>
+			<li><a href="#">Volunteers</a></li>
+			<li><a href="#">Churches</a></li>
+			<li><a href="#">Help</a></li>
+			<li><a href="#">Contact Us</a></li>
+		</ul>
+	</div>
 <div id="main-content">
 <p>We have partnered with TechMission's <a href="http://www.christianvolunteering.org">ChristianVolunteering.org</a> to provide the following opportunities to you:</p>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-<!-- Google test key (throws error): --><script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA1XbMiDxx_BTCY2_FkPh06RRaGTYH6UMl8mADNa0YKuWNNa8VNxQEerTAUcfkyrr6OwBovxn7TDAH5Q"></script>
+<script type="text/javascript"
+ src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <!-- Google test key: <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA1XbMiDxx_BTCY2_FkPh06RRaGTYH6UMl8mADNa0YKuWNNa8VNxQEerTAUcfkyrr6OwBovxn7TDAH5Q"></script>-->
+	<!-- TM key: --><script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAADF2STd2FFyIZbSoiWXIbaxQQvGYfRqBU3gl5ucbXbMj88CbMfxQ8U1oTC03_R7hWrs1XrvKBC1_7fQ"></script>
 <script type="text/javascript">
 $(function() {
   // Sets the path for the embedded content
-    var path = "http://www.urbanministry.org/remote-block/quicktabs/17/7616?callback=?";
+	var path = "http://www.gospelpedia.net/remote-block/json/quicktabs/13/4284?callback=?";
     $.getJSON(path, function(data) {
     // Sets the innerHTML of the "my-city-embed" <div> to the embedded content
-    $("#my-city-embed").html(data.page);
+		$("meta[name=x-embed-css]").replaceWith(data.css);
+		$("#embed-content").html(data.page);
+		alert(data.js);
+		$("#embed-js").html(data.js);
   });
 });
 </script>
-<div id="my-city-embed" style="width: 600px;"></div>
+<div id="embed-content" style="width: 600px;"></div>
+<div id="embed-js"></div>
 </div>
 <div id="sidebar-right">
-  <h2>Our City Partners</h2>
-  <ul>
-    <li><a href="#">EGC</a></li>
-    <li><a href="#">Black Ministerial Alliance</a></li>
-    <li><a href="#">Boston Rescue Mission</a></li>
-    <li><a href="#">Salvation Army - Boston</a></li>
-  </ul>
+		<h2>Our City Partners</h2>
+		<ul>
+			<li><a href="#">EGC</a></li>
+			<li><a href="#">Black Ministerial Alliance</a></li>
+			<li><a href="#">Boston Rescue Mission</a></li>
+			<li><a href="#">Salvation Army - Boston</a></li>
+		</ul>
+	</div>
+	<div id="footer">
+		<p>LiveYourFaith.net | Powered by TechMission <a href="http://www.christianvolunteering.org">ChristianVolunteering.org</a></p>
+	</div>
 </div>
-<div id="footer">
-  <p>LiveYourFaith.net | Powered by TechMission <a href="http://www.christianvolunteering.org">ChristianVolunteering.org</a></p>
-</div>
-</div><!-- end wrapper div -->
 </body>
 
 </html>
-

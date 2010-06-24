@@ -21,13 +21,6 @@ function remote_block_help($path, $arg) {
 function remote_block_menu() {
   $items = array();
 
-  $items['remote-block/%/%'] = array(
-    'page callback' => 'remote_block_embed',
-    'page arguments' => array(1, 2),
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-	
   $items['remote-block/%/%/%'] = array(
     'page callback' => 'remote_block_embed',
     'page arguments' => array(1, 2, 3),
@@ -39,18 +32,27 @@ function remote_block_menu() {
 }
 
 /**
- * Menu callback for remote-block/%/% -
+ * Menu callback for remote-block/%/%/% -
  * invokes the block view hook in order to render a certain block.
  */
-function remote_block_embed($module, $delta, $format = "html") {
+function remote_block_embed($format, $module, $delta) {
+  // Sets the variable to print without CSS and JS based on query string.
   $theme = TRUE;
   if(isset($_GET) && isset($_GET['theme']) && $_GET['theme'] == 'none') { $theme = FALSE; }
-	
-  $block = module_invoke($module, 'block', 'view', $delta);
-  // $content .= drupal_get_html_head();
-  $content .= drupal_get_css();
+
+  // Loads the block content, or returns error if failure.
+  if(isset($module) && module_exists($module) && isset($delta)) {
+	  $block = module_invoke($module, 'block', 'view', $delta);
+	}
+	else {
+	  print 'Invalid request.';
+	}
+
+  // Sets up the variables of $css, $content, and $js.
+  $css = drupal_get_css();
+  // Includes Quicktabs CSS if necessary.
   if($module == 'quicktabs') { 
-    $content .= 
+    $css .= 
       '<style type="text/css">
          .quicktabs-hide {
           display: block;
@@ -60,29 +62,49 @@ function remote_block_embed($module, $delta, $format = "html") {
          }
        </style>';
   }
-  $content .= $block['content'];
-  $content .= drupal_get_js();
+  $content = $block['content'];
+  // Adds JS at the bottom.
+  $js = drupal_get_js();
+  
+  // Sets up variables for the JSON of the block, and JSON of block plus CSS/JS.
   $json_block = array('page' => $block['content']);
-  $json_content = array('page' => $content);
+  // Sets up content array so page, css, and js can be added at specific points.
+  $json_content = array('page' => $content, 'css' => $css, 'js' => $js);
+  
   if(isset($block) && is_array($block) && isset($block['content'])) { 
     if($theme == FALSE) {
-      if($format == "html") {
+      if($format == 'html') {
         print $block['content'];
       }
-      else {
-        echo $_GET['callback'] . '(' . json_encode($json_block) . ');';
+      elseif($format == 'json') {
+        if(isset($_GET['callback'])) {
+          $json_callback = $_GET['callback'];
+        }
+        else {
+          $json_callback = '';
+        }
+        echo $json_callback . '(' . json_encode($json_block) . ');';
       }
-    }
+			else {
+			  print 'Invalid format.';
+      }
+		}
     else {
-      if($format == "html") {
+      if($format == 'html') {
         print $content;
       }
-      else {
-        echo $_GET['callback'] . '(' . json_encode($json_content) . ');';
+      elseif($format == 'json') {
+        if(isset($_GET['callback'])) {
+          $json_callback = $_GET['callback'];
+        }
+        else {
+          $json_callback = '';
+        }
+        echo $json_callback . '(' . json_encode($json_content) . ');';
       }
+			else {
+			  print 'Invalid format.';
+			}
     }
-  }
-  else {
-    print "Block does not exist.";
   }
 }
