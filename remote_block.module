@@ -42,13 +42,14 @@ function remote_block_embed($format, $module, $delta) {
 
   // Loads the block content, or returns error if failure.
   if(isset($module) && module_exists($module) && isset($delta)) {
-	  $block = module_invoke($module, 'block', 'view', $delta);
-	}
-	else {
-	  print 'Invalid request.';
-	}
+    $block = module_invoke($module, 'block', 'view', $delta);
+  }
+  else {
+    print 'Invalid request.';
+  }
 
-  // Sets up the variables of $css, $content, and $js.
+  // Sets up the variables of $head, $css, $content, and $js.
+	$head = drupal_get_html_head();
   $css = drupal_get_css();
   // Includes Quicktabs CSS if necessary.
   if($module == 'quicktabs') { 
@@ -62,14 +63,16 @@ function remote_block_embed($format, $module, $delta) {
          }
        </style>';
   }
-  $content = $block['content'];
   // Adds JS at the bottom.
   $js = drupal_get_js();
-  
+
+  // Builds an entire HTML page for the HTML display format
+  $content = '<html><head>' . $head . $css . '</head><body>' . $block['content'] . $js . '</body></html>';
+
   // Sets up variables for the JSON of the block, and JSON of block plus CSS/JS.
   $json_block = array('page' => $block['content']);
   // Sets up content array so page, css, and js can be added at specific points.
-  $json_content = array('page' => $content, 'css' => $css, 'js' => $js);
+  $json_content = array('content' => $block['content'], 'css' => $css, 'js' => $js);
   
   if(isset($block) && is_array($block) && isset($block['content'])) { 
     if($theme == FALSE) {
@@ -85,10 +88,10 @@ function remote_block_embed($format, $module, $delta) {
         }
         echo $json_callback . '(' . json_encode($json_block) . ');';
       }
-			else {
-			  print 'Invalid format.';
+      else {
+        print 'Invalid format.';
       }
-		}
+    }
     else {
       if($format == 'html') {
         print $content;
@@ -102,9 +105,9 @@ function remote_block_embed($format, $module, $delta) {
         }
         echo $json_callback . '(' . json_encode($json_content) . ');';
       }
-			else {
-			  print 'Invalid format.';
-			}
+      else {
+        print 'Invalid format.';
+      }
     }
   }
 }

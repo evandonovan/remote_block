@@ -106,8 +106,7 @@ $(function() {
     $.getJSON(path, function(data) {
     // Sets the innerHTML of the "my-city-embed" <div> to the embedded content
 		$("meta[name=x-embed-css]").replaceWith(data.css);
-		$("#embed-content").html(data.page);
-		alert(data.js);
+		$("#embed-content").html(data.content);
 		$("#embed-js").html(data.js);
   });
 });
