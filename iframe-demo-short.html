@@ -22,18 +22,18 @@
 		background:#D6D7C4;
 	}
 	#header {
-    padding:5px 10px;
-		background:#566999;
+          padding:5px 10px;
+          background:#566999;
 	}
 	#header h1 {
 	  padding-top: 2px;
-		padding-bottom: 5px;
-		font-size: 40px;
-		color: #aaa;
+	  padding-bottom: 5px;
+	  font-size: 40px;
+	  color: #aaa;
 	}
 	h1 {
-	    margin:0;
-    }
+	  margin:0;
+        }
 	#nav {
 		padding:5px 10px;
 		background:#CFCFCF;
@@ -70,15 +70,12 @@
 		background:#66332B;
 	}
 	#footer p {
-		margin:0;
-    }
+	  margin:0;
+        }
 	* html #footer {
 		height:1px;
 	}
 	</style>
-
-<meta name="x-embed-css" content="used by embed code" />
-
 </head>
 
 <body>
@@ -97,21 +94,41 @@
 <p>We have partnered with TechMission's <a href="http://www.christianvolunteering.org">ChristianVolunteering.org</a> to provide the following opportunities to you:</p>
 <script type="text/javascript"
  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-	<!-- TM key: --><script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAADF2STd2FFyIZbSoiWXIbaxQQvGYfRqBU3gl5ucbXbMj88CbMfxQ8U1oTC03_R7hWrs1XrvKBC1_7fQ"></script>
+<script type="text/javascript" src="http://www.urbanministry.org/sites/all/modules/custom/remote_block/js/jquery.ba-postmessage.min.js"></script>
 <script type="text/javascript">
-$(function() {
-  // Sets the path for the embedded content
-	var path = "http://www.urbanministry.org/remote-block/json/quicktabs/17/7616?callback=?";
-    $.getJSON(path, function(data) {
-    // Sets the innerHTML of the "my-city-embed" <div> to the embedded content
-		$("meta[name=x-embed-css]").replaceWith(data.css);
-		$("#embed-content").html(data.content);
-		$("#embed-js").html(data.js);
-  });
+$(function(){
+  
+  // Keep track of the iframe height.
+  var if_height,
+  
+    // Pass the parent page URL into the Iframe in a meaningful way (this URL could be
+    // passed via query string or hard coded into the child page, it depends on your needs).
+    src = 'http://www.urbanministry.org/remote-block/html/quicktabs/17/7687#' + encodeURIComponent( document.location.href ),
+    
+    // Append the Iframe into the DOM.
+    iframe = $( '<iframe " src="' + src + '" width="600" height="50" scrolling="no" frameborder="0"><\/iframe>' )
+      .appendTo( '#iframe' );
+  
+  // Setup a callback to handle the dispatched MessageEvent event. In cases where
+  // window.postMessage is supported, the passed event will have .data, .origin and
+  // .source properties. Otherwise, this will only have the .data property.
+  $.receiveMessage(function(e){
+    
+    // Get the height from the passsed data.
+    var h = Number( e.data.replace( /.*if_height=(\d+)(?:&|$)/, '$1' ) );
+    
+    if ( !isNaN( h ) && h > 0 && h !== if_height ) {
+      // Height has changed, update the iframe.
+      iframe.height( if_height = h );
+    }
+    
+  // An optional origin URL (Ignored where window.postMessage is unsupported).
+  }, 'http://www.urbanministry.org' );
+  
 });
 </script>
-<div id="embed-content" style="width: 600px;"></div>
-<div id="embed-js"></div>
+<div id="widget"></div>
+<div id="iframe"></div>
 </div>
 <div id="sidebar-right">
 		<h2>Our City Partners</h2>
@@ -129,3 +146,4 @@ $(function() {
 </body>
 
 </html>
+
