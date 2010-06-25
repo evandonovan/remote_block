@@ -1,5 +1,7 @@
+// Based on code from http://benalman.com/code/projects/jquery-postmessage/examples/iframe/
+// TODO: figure out why it is not currently working in Opera, IE8
 $(function(){
-  // Get the parent page URL as it was passed in, for browsers that don't support
+  // Gets the parent page URL as it was passed in, for browsers that don't support
   // window.postMessage (this URL could be hard-coded).
   var parent_url = decodeURIComponent( document.location.hash.replace( /^#/, '' ) ),
     link;
@@ -12,10 +14,10 @@ $(function(){
     $.postMessage({ if_height: $('body').outerHeight( true ) }, parent_url, parent );
   };
   
-  // Now that the DOM has been set up (and the height should be set) invoke setHeight.
+  // Now that the DOM has been set up (and the height should be set) invokes setHeight.
   setHeight();
 	
-	// Bind to Quicktabs list items so that iframe resizes when they are clicked
-	$('a.qt_tab').click(function() { setHeight(); });
+  // Binds to Quicktabs list items so that iframe resizes when they are clicked
+  $('a.qt_tab').click(function() { setHeight(); });
   
 });
