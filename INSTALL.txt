@@ -1,3 +1,19 @@
-Follow the standard Drupal module installation process to install this module.
+Follow the standard Drupal module installation process
+to install this module.
 
-Note that this is a development release, and the code would need to be modified to suit specific use cases on your site.
+You will need to upgrade to the latest 
+version of jQuery Update (2.0-beta1 as of this writing) before
+you may use the module, since it depends on jQuery features that
+were introduced later than the version of jQuery in D6 core.
+
+Note that this is a development release, and the code would need
+to be modified to suit specific use cases on your site.
+
+Please read the security warning if your site has blocks with
+access restrictions on it.
+
+The demo files give examples of how the embedding works. 
+The module's first tagged release is projected to have an embed
+code generation form in it.
+
+
