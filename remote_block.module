@@ -65,14 +65,14 @@ function remote_block_embed_code() {
 */
 function rb_embed_code_form() {
   $code = rb_get_city_embed_code();
-	
-	$form = array();
-	$form['rb_embed_code'] = array(
-	  '#type' => 'fieldset',
-		'#title' => t('Embed this page'),
-		'#collapsible' => TRUE,
-		'#collapsed' => TRUE,
-	);
+
+  $form = array();
+  $form['rb_embed_code'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Embed this page'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
   $form['rb_embed_code']['code'] = array(
     '#type' => 'textarea',
     '#title' => t('Embed code'),
@@ -88,9 +88,10 @@ function rb_embed_code_form() {
 */
 function rb_get_city_embed_code() {
   if(arg(0) == "taxonomy" && arg(1) == "term" && is_numeric(arg(2))) {
-	  $term = taxonomy_get_term(arg(2));
-		if(is_object($term) && ($term->vid == 15 || $term->vid == 261)) {
-		  $embed_code = <<<EOF
+    $term = taxonomy_get_term(arg(2));
+    if(is_object($term) && ($term->vid == 15 || $term->vid == 261)) {
+      $embed_code = <<<EOF
+<!-- begin TechMission ChristianVolunteering embed code for $term->name -->
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://www.urbanministry.org/sites/all/modules/custom/remote_block/js/jquery.ba-postmessage.min.js"></script>
 <script type="text/javascript">
@@ -108,16 +109,17 @@ $(function(){
 });
 </script>
 <div id="iframe"></div>
+<!-- end embed code -->
 EOF;
       return $embed_code;
-		}
-		else {
-		  return "No embed code available for the current term.";
-		}
-	}
-	else {
-	  return "No embed code available.";
-	}
+    }
+    else {
+      return "No embed code available for the current term.";
+    }
+  }
+  else {
+    return "No embed code available.";
+  }
 }
 
 /**
@@ -152,9 +154,9 @@ function remote_block_embed($format, $module, $delta) {
          }
        </style>';
   }
-	// If $format is "html" then add the JS for <iframe> window.postMessage.
-	drupal_add_js(drupal_get_path('module', 'remote_block') . '/js/jquery.ba-postmessage.min.js');
-	drupal_add_js(drupal_get_path('module', 'remote_block') . '/js/remote_block_child.js');
+  // If $format is "html" then add the JS for <iframe> window.postMessage.
+  drupal_add_js(drupal_get_path('module', 'remote_block') . '/js/jquery.ba-postmessage.min.js');
+  drupal_add_js(drupal_get_path('module', 'remote_block') . '/js/remote_block_child.js');
   // Adds JS at the bottom.
   $js = drupal_get_js();
 
