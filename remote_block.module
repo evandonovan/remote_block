@@ -9,7 +9,8 @@ function remote_block_help($path, $arg) {
   switch($path) {
     case 'admin/help#remote_block':
     $output = '<p>' . t('Remote Block renders blocks on a regionless page so that they may be embedded via an iframe. You may use the embed code it generates to embed any given block on a site. Note that required CSS and JS will be included, so blocks with special styles and behaviors (such as Quicktabs blocks) will still function.') . '</p>';
-    $output .= '<p>' . t('The pages provided by Remote Block can also display bare HTML if the ?theme=none query string is appended to the URL. This is useful when using wget to grab raw HTML for use in external sites.') . '</p>';
+    $output .= '<p>' . t('Remote Block can also provide the same content via JSON for more advanced embeds. See the examples/json-demo.html file to see how it works.') . '</p>';
+    $output .= '<p>' . t('Finally, Remote Block can display bare HTML if the ?theme=none query string is appended to the URL. This is useful when using wget to grab raw HTML for use in external sites.') . '</p>';
     break;
     }
   return $output;

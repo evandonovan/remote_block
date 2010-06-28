@@ -1,5 +1,5 @@
 <?php 
 // $Id$
 function remote_block_install() {
-  drupal_set_message("The Remote Block module has been enabled. You may now use the following syntax (--add syntax here--) to add blocks to external sites.");
+  drupal_set_message("The Remote Block module has been enabled. Use the provided embed code block, or view the examples to see how to add blocks to external sites.");
 }
