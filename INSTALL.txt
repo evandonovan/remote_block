@@ -6,14 +6,23 @@ version of jQuery Update (2.0-beta1 as of this writing) before
 you may use the module, since it depends on jQuery features that
 were introduced later than the version of jQuery in D6 core.
 
-Note that this is a development release, and the code would need
+(Note that some Drupal modules which include JS may not yet be
+compatible with jQuery > 1.3.)
+
+This is a development release, and the code would need
 to be modified to suit specific use cases on your site.
 
-Please read the security warning if your site has blocks with
-access restrictions on it.
-
 The demo files give examples of how the embedding works. 
-The module's first tagged release is projected to have an embed
-code generation form in it.
+
+SECURITY WARNING:
+This module does not currently do any security checking on the blocks
+that can be embedded, beyond the checking for the "access content" permission. 
+Currently I am not aware of a way to properly check to ensure that 
+arbitrary blocks can be viewed by anonymous users, as would be the case 
+on third-party sites, while maintaining strict security.
+
+You should be careful in enabling this module or else 
+private data might be exposed.
+
 
 

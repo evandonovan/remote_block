@@ -1,6 +1,10 @@
 Module: Remote Block
 
-Renders blocks on a regionless page so that they may be embedded via an iframe.
+Renders blocks on a regionless page so that they may be embedded via an iframe,
+or via JSON.
+
+The module generates an embed code that can be used on other sites.
+It provides a block that generates the embed code for the "My City" page.
 
 Developed for TechMission by Evan Donovan (evan@evandonovan.org).
 

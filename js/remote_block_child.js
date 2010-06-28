@@ -1,5 +1,6 @@
+// <iframe> dynamic resizing JS
+// filename: remote_block/js/remote_block_child.js
 // Based on code from http://benalman.com/code/projects/jquery-postmessage/examples/iframe/
-// TODO: figure out why it is not currently working in Opera, IE8
 $(function(){
   // Gets the parent page URL as it was passed in, for browsers that don't support
   // window.postMessage (this URL could be hard-coded).

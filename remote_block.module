@@ -8,7 +8,7 @@ function remote_block_help($path, $arg) {
   $output = '';
   switch($path) {
     case 'admin/help#remote_block':
-    $output = '<p>' . t('Remote Block renders blocks on a regionless page so that they may be embedded via an iframe. You may use the following syntax (--add syntax here--) to embed any given block on a site. Note that required CSS and JS will be included, so blocks with special styles and behaviors (such as Quicktabs blocks) will still function.') . '</p>';
+    $output = '<p>' . t('Remote Block renders blocks on a regionless page so that they may be embedded via an iframe. You may use the embed code it generates to embed any given block on a site. Note that required CSS and JS will be included, so blocks with special styles and behaviors (such as Quicktabs blocks) will still function.') . '</p>';
     $output .= '<p>' . t('The pages provided by Remote Block can also display bare HTML if the ?theme=none query string is appended to the URL. This is useful when using wget to grab raw HTML for use in external sites.') . '</p>';
     break;
     }
@@ -32,6 +32,94 @@ function remote_block_menu() {
 }
 
 /**
+ * Implements hook_block().
+ * Provides a block that shows the embed code for the "My City" page.
+*/
+function remote_block_block($op = 'list', $delta = 0) {
+  $block = array();
+  switch ($op) {
+    case 'list':
+      $block[0]['info'] = t('My City Embed Code');
+      return $block;
+    case 'view':
+      switch ($delta) {
+        case 0:
+          $block['subject'] = t('Embed This Page');
+          $block['content'] = remote_block_embed_code();
+          break;
+      }
+      return $block;
+  }
+}
+
+/** 
+ * Content for the embed code block.
+*/
+function remote_block_embed_code() {
+  return drupal_get_form('rb_embed_code_form');
+}
+
+/**
+ * Form definition for the embed code block.
+*/
+function rb_embed_code_form() {
+  $code = rb_get_city_embed_code();
+	
+	$form = array();
+	$form['rb_embed_code'] = array(
+	  '#type' => 'fieldset',
+		'#title' => t('Embed this page'),
+		'#collapsible' => TRUE,
+		'#collapsed' => TRUE,
+	);
+  $form['rb_embed_code']['code'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Embed code'),
+    '#description' => t('Copy and paste this code into the &lt;body&gt; of your website\'s HTML'),
+    '#value' => $code,
+    '#maxlength' => FALSE,
+  );
+  return $form;
+}
+
+/**
+ * Generates the embed code itself.
+*/
+function rb_get_city_embed_code() {
+  if(arg(0) == "taxonomy" && arg(1) == "term" && is_numeric(arg(2))) {
+	  $term = taxonomy_get_term(arg(2));
+		if(is_object($term) && ($term->vid == 15 || $term->vid == 261)) {
+		  $embed_code = <<<EOF
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://www.urbanministry.org/sites/all/modules/custom/remote_block/js/jquery.ba-postmessage.min.js"></script>
+<script type="text/javascript">
+$(function(){  
+  var if_height,  
+    src = 'http://www.urbanministry.org/remote-block/html/quicktabs/17/$term->tid#' + encodeURIComponent( document.location.href ),    
+    iframe = $( '<iframe " src="' + src + '" width="600" height="50" scrolling="no" frameborder="0"><\/iframe>' )
+      .appendTo( '#iframe' );  
+  $.receiveMessage(function(e){    
+    var h = Number( e.data.replace( /.*if_height=(\d+)(?:&|$)/, '$1' ) );    
+    if ( !isNaN( h ) && h > 0 && h !== if_height ) {
+      iframe.height( if_height = h );
+    }    
+  }, 'http://www.urbanministry.org' );
+});
+</script>
+<div id="iframe"></div>
+EOF;
+      return $embed_code;
+		}
+		else {
+		  return "No embed code available for the current term.";
+		}
+	}
+	else {
+	  return "No embed code available.";
+	}
+}
+
+/**
  * Menu callback for remote-block/%/%/% -
  * invokes the block view hook in order to render a certain block.
  */
@@ -49,7 +137,7 @@ function remote_block_embed($format, $module, $delta) {
   }
 
   // Sets up the variables of $head, $css, $content, and $js.
-	$head = drupal_get_html_head();
+  $head = drupal_get_html_head();
   $css = drupal_get_css();
   // Includes Quicktabs CSS if necessary.
   if($module == 'quicktabs') { 
