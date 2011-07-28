@@ -89,7 +89,7 @@ function rb_embed_code_form() {
 function rb_get_city_embed_code() {
   if(arg(0) == "taxonomy" && arg(1) == "term" && is_numeric(arg(2))) {
     $term = taxonomy_get_term(arg(2));
-    if(is_object($term) && ($term->vid == 15 || $term->vid == 261)) {
+    if(is_object($term)) {
       $embed_code = <<<EOF
 <!-- begin TechMission ChristianVolunteering embed code for $term->name -->
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
